@@ -50,3 +50,35 @@
 </body>
 
 </html>
+<?php
+if (isset($_POST['login_Btn'])) {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    $conn = mysqli_connect("localhost", "root", "");
+
+    if (!$conn) {
+        die("Connection failed: " . mysqli_connect_error());
+    }
+
+    $sql = "SELECT * FROM websitelogin.logindetails WHERE username = '$username'";
+    $result = mysqli_query($conn, $sql);
+
+    if (mysqli_num_rows($result) == 1) {
+        $row = mysqli_fetch_assoc($result);
+        $resultPassword = $row['password'];
+
+        if ($password === $resultPassword) {
+            header('Location: index.html');
+        } else {
+            echo "<script>
+                    alert('Login unsuccessful');
+                  </script>";
+        }
+    } else {
+        echo "<script>
+                alert('Login unsuccessful');
+              </script>";
+    }
+}
+?>
